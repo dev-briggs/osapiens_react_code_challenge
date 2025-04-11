@@ -23,10 +23,12 @@ const classes = {
   success: `${PREFIX}-success`,
   error: `${PREFIX}-error`,
   warning: `${PREFIX}-warning`,
-  info: `${PREFIX}-info`
+  info: `${PREFIX}-info`,
 };
 
-const CombinedStoreProvider: React.FC<{}> = ({ children }) => {
+const CombinedStoreProvider: React.FC<Record<string, unknown>> = ({
+  children,
+}) => {
   return <UserStoreProvider>{children}</UserStoreProvider>;
 };
 
@@ -44,7 +46,7 @@ const AppContainer = () => {
               variantSuccess: classes.success,
               variantError: classes.error,
               variantWarning: classes.warning,
-              variantInfo: classes.info
+              variantInfo: classes.info,
             }}
           >
             <StylesProvider injectFirst>
