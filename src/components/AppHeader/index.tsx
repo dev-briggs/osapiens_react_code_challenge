@@ -37,6 +37,9 @@ const AppHeader = React.forwardRef<HTMLDivElement, AppHeaderProps>(
     const theme = useTheme();
 
     const [count, setCount] = useState(0);
+    const [countdownInterval, setCountdownInterval] = useState<
+      NodeJS.Timeout | undefined
+    >(undefined);
     const hours = 1;
     const minutes = hours * 60;
     const seconds = minutes * 60;
@@ -45,10 +48,20 @@ const AppHeader = React.forwardRef<HTMLDivElement, AppHeaderProps>(
     const countdownSeconds = (countdown % 60).toFixed(0).padStart(2, "0");
 
     useEffect(() => {
-      setInterval(() => {
-        setCount((c) => c + 1);
-      }, 1000);
+      setCountdownInterval(
+        setInterval(() => {
+          setCount((c) => c + 1);
+        }, 1000)
+      );
+
+      return () => clearInterval(countdownInterval);
     }, []);
+
+    useEffect(() => {
+      if (countdown <= 0) {
+        clearInterval(countdownInterval);
+      }
+    }, [countdown, countdownInterval]);
 
     return (
       <AppBar ref={ref} position="fixed" sx={{ width: "100vw" }}>
