@@ -32,7 +32,9 @@ const AccessDenied: React.FC = () => {
 
   // TODO: aldd all i18n texts to locales and refactor file
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    /* tslint:disable:no-empty */
+  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>

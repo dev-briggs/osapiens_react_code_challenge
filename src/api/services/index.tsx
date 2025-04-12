@@ -1,4 +1,4 @@
-import User from "./User";
+// import User from "./User";
 
 const requireAllServices = (ctx: any): React.FC<any>[] => {
   const keys = ctx.keys();
@@ -11,7 +11,8 @@ const getAllServices = (): React.FC<any>[] => {
   // return requireAllServices(
   //   require.context("api/services/", true, /index\.tsx$/)
   // );
-  return [User];
+  // return [User];
+  return [];
 };
 
 export default getAllServices();

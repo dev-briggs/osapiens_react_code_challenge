@@ -12,9 +12,13 @@ export interface Language {
   icon: JSX.Element;
 }
 
+type NavigatorWithUserLanguage = Navigator & {
+  userLanguage?: string;
+};
+
 const getBrowserLanguage = () => {
-  // @ts-ignore
-  const userLang = navigator.language || navigator.userLanguage;
+  const { language, userLanguage } = navigator as NavigatorWithUserLanguage;
+  const userLang = language || userLanguage;
 
   return userLang ? userLang.split("-")[0] : FALLBACK_LANGUAGE;
 };
@@ -23,7 +27,7 @@ const browserLanguage = getBrowserLanguage();
 
 export const defaultTranslationModules = [
   { locale: "de", texts: de },
-  { locale: "en", texts: en }
+  { locale: "en", texts: en },
 ];
 export const defaultLanguages = defaultTranslationModules.map((m) => m.locale);
 
@@ -46,8 +50,8 @@ i18n
     lng: FALLBACK_LANGUAGE || browserLanguage,
     fallbackLng: FALLBACK_LANGUAGE,
     interpolation: {
-      escapeValue: false // not needed for react as it escapes by default
-    }
+      escapeValue: false, // not needed for react as it escapes by default
+    },
   });
 
 export default i18n;

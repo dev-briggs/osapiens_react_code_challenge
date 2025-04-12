@@ -1,4 +1,13 @@
-import { Grow, Box, Theme, Toolbar, Typography } from "@mui/material";
+import {
+  Grow,
+  Box,
+  Theme,
+  Toolbar,
+  Typography,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+} from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import { styled, useTheme } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
@@ -33,13 +42,15 @@ const AppBar = styled(MuiAppBar)<AppBarProps>(({ theme }) => ({
 const AppHeader = React.forwardRef<HTMLDivElement, AppHeaderProps>(
   (props, ref) => {
     const { user, pageTitle } = props;
-    const { t } = useTranslation("app");
+    const { t, i18n } = useTranslation("app");
     const theme = useTheme();
 
     const [count, setCount] = useState(0);
     const [countdownInterval, setCountdownInterval] = useState<
       NodeJS.Timeout | undefined
     >(undefined);
+    const [language, setLanguage] = useState(i18n.language);
+
     const hours = 1;
     const minutes = hours * 60;
     const seconds = minutes * 60;
@@ -62,6 +73,12 @@ const AppHeader = React.forwardRef<HTMLDivElement, AppHeaderProps>(
         clearInterval(countdownInterval);
       }
     }, [countdown, countdownInterval]);
+
+    const handleLanguageChange = (event: SelectChangeEvent<string>) => {
+      const selectedLanguage = event.target.value as string;
+      setLanguage(selectedLanguage);
+      i18n.changeLanguage(selectedLanguage);
+    };
 
     return (
       <AppBar ref={ref} position="fixed" sx={{ width: "100vw" }}>
@@ -94,7 +111,22 @@ const AppHeader = React.forwardRef<HTMLDivElement, AppHeaderProps>(
                 {pageTitle.toLocaleUpperCase()}
               </Typography>
             </Box>
-            <Box sx={{ flex: 1, justifyContent: "flex-end", display: "flex" }}>
+            <Box
+              sx={{
+                flex: 1,
+                justifyContent: "flex-end",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Select
+                value={language}
+                onChange={handleLanguageChange}
+                sx={{ color: "white", borderColor: "white", marginRight: 2 }}
+              >
+                <MenuItem value="en">English</MenuItem>
+                <MenuItem value="de">Deutsch</MenuItem>
+              </Select>
               {user && user.eMail && (
                 <Grow in={Boolean(user && user.eMail)}>
                   <div>
